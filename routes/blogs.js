@@ -53,27 +53,59 @@ router.get('/', function(req, res, next) {
   })
 });
 
-router.get('/blogs/all', function(req, res, next) { // concatenate with what is in app.js app.use route
+router.get('/all', function(req, res, next) { // concatenate with what is in app.js app.use route
     res.json({
       success: true,
-      route: "blogs",
-      message:"These are the sample blogs"
+      blogs: sampleBlogs
     })
   });
 
-  router.get('/blogs/single/:blogTitleGet', function(req, res, next) {
+
+  router.get('/single/:blogTitleGet', function(req, res, next) {
+  const blogToFind = req.params.blogTitleToGet;
+
+    // .find() will return the entry matching the true condition in the callback function
+	const foundBlog = sampleBlogs.find((blog)=>{
+		if (blog.title === blogToFind) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+
+    
     res.json({
       success: true,
-      route: "blogs",
-      message:"This is a single blog"
+      blog: foundBlog
     })
   });
 
-  router.get('/blogs/single/:blogTitleDelete', function(req, res, next) {
+
+
+    
+  
+  router.get('/single/:blogTitleDelete', function(req, res, next) {
+    const blogIndexToDelete = sampleBlogs.findIndex((blog)=>{
+        if (blog.title === req.params.blogTitleToDelete){
+            return true;
+        } else{
+            return false;
+        }
+    })
+
+    console.log(blogIndexToDelete)
+
+    if (blogIndexToDelete < 0) {
+        res.json({
+            hasBeenDeleted: false
+        })
+        return;
+    }
+    
+    sampleBlogs.splice(blogIndexToDelete, 1);
+    
     res.json({
-      success: true,
-      route: "blogs",
-      message:"Delete a single blog"
+      hasBeenDeleted: true
     })
   });
 //Module.exports is listing the variables in this file to send to other files module.exports = router;

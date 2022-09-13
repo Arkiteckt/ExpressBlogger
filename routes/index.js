@@ -7,3 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
+
+
+// module.exports = router; sending the router variable from the route file
+// In plain english, we are exporting from index.js file (var router = express.Router();) to app.js file (var indexRouter = require('./routes/index'))
+

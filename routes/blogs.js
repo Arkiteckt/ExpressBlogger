@@ -114,23 +114,119 @@ router.get('/all', function(req, res, next) { // concatenate with what is in app
 
 
 //**********ExpressBlogger Day 2 Assignment DUE ON DAY 3 @ 11:30**********
-var { validateBlogData } = require("../validation/bloggers")
+// var { validateBlogData } = require("../validation/bloggers")
 
-router.post('/blogs/create-one', function( res, req, next){
-    // const validateBlogData =
+router.post('/create-one', function( res, req,) => {
+    // // const validateBlogData =
+    // res.json({
+    //     success: true,
+    //     route: "blogs post",
+    //     message:"blog post was successful"
+    //   })
+    // });
+const title = req.body.title
+const text = req.body.text
+const author = req.body.author
+const category = req.body.category
+
+const blogData = {
+    title,
+    text,
+    author,
+    category,
+    createdAt: new Date(),
+    lastModified: new Date()
+}
+const blogDataCheck = validateBlogData(blogData)
+
+	if (blogDataCheck.isValid === false) {
+		res.json({
+			success: false,
+			message: blogDataCheck.message
+		})
+		return;
+	}
+
+	sampleBlogs.push(blogData)
+
+	res.json({
+		success: true
+	})
+})
+
+router.put('/update-one/:blogTitle'), function(res, req,) => {
+//     res.json({
+//         success: true,
+//         route: "blog post",
+//         message:"blog post was succesfull"
+//       })
+// const userList = [];
+// module.exports = router;
+
+const title = req.body.title
+const text = req.body.text
+const author = req.body.author
+const category = req.body.category
+
+
+const originalBlogIndex = sampleBlogs.findIndex((blog)=>{
+    return blog.title === title
+})
+
+const originalBlog = sampleBlogs[originalBlogIndex]
+
+const blogData = {
+    title: originalBlog.title,
+    text,
+    author,
+    category,
+    createdAt: originalBlog.createdAt,
+    lastModified: new Date()
+}
+
+const blogDataCheck = validateBlogData(blogData)
+
+if (blogDataCheck.isValid === false) {
     res.json({
-        success: true,
-        route: "blogs post",
-        message:"blog post was successful"
-      })
-    });
+        success: false,
+        message: blogDataCheck.message
+    })
+    return;
+}
 
+sampleBlogs[originalBlogIndex] = blogData
 
-router.put('/blogs/update-one/:blogTitle'), function(res, req, next){
-    res.json({
-        success: true,
-        route: "blog post",
-        message:"blog post was succesfull"
-      })
-const userList = [];
+res.json({
+    success: true
+})
+})
+
+router.delete("/single/:blogTitleToDelete", (req, res)=>{
+
+	const blogIndexToDelete = sampleBlogs.findIndex((blog)=>{
+		if (blog.title === req.params.blogTitleToDelete) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+
+	console.log(blogIndexToDelete)
+
+	if (blogIndexToDelete < 0) {
+		res.json({
+			hasBeenDeleted: false
+		})
+		return;
+	}
+
+	sampleBlogs.splice(blogIndexToDelete, 1);
+
+	res.json({
+		hasBeenDeleted: true
+	})
+
+})
+
+// Module.exports is listing the variables in this file to send to other files
 module.exports = router;

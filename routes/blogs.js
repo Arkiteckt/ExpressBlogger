@@ -108,6 +108,29 @@ router.get('/all', function(req, res, next) { // concatenate with what is in app
       hasBeenDeleted: true
     })
   });
+
+
 //Module.exports is listing the variables in this file to send to other files module.exports = router;
 
+
+//**********ExpressBlogger Day 2 Assignment DUE ON DAY 3 @ 11:30**********
+var { validateBlogData } = require("../validation/bloggers")
+
+router.post('/blogs/create-one', function( res, req, next){
+    // const validateBlogData =
+    res.json({
+        success: true,
+        route: "blogs post",
+        message:"blog post was successful"
+      })
+    });
+
+
+router.put('/blogs/update-one/:blogTitle'), function(res, req, next){
+    res.json({
+        success: true,
+        route: "blog post",
+        message:"blog post was succesfull"
+      })
+const userList = [];
 module.exports = router;
